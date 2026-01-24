@@ -1,0 +1,60 @@
+import React from 'react';
+//import { useState } from 'react'
+
+/*function App() {
+  const [count, setCount] = useState(0)
+  return (
+    <div>
+        <button onClick={() => setCount((count) => count + 1)}>
+          <h1>count {count}</h1>
+        </button>
+    </div>
+  )
+}*/
+/*class App extends React.Component {
+//  state = {
+  //  counter: 0
+//  };
+
+  render() {
+    return (
+      <>
+        <h1>Counter: {this.state.counter}</h1>
+        <button
+          onClick={() => {
+            this.setState((prevState) => ({
+              counter: prevState.counter + 1
+            }));
+          }}
+        >
+          Change
+        </button>
+      </>
+    );
+  }
+}*/
+
+class App extends React.Component{
+  state={
+    product:"oppo f27 pro plus",
+    price:20000
+  }
+  render(){
+    return(
+      <>
+        <h1>product:{this.state.product}</h1>
+        <p>price:{this.state.price}</p>
+        <input id='price' type='number'/>
+        <button onClick={
+          ()=>{
+            let p=document.getElementById('price').value;
+            console.log(p)
+            this.setState({
+              price:p
+            })
+          }
+        }>update</button>
+      </>)
+  }
+}
+export default App
