@@ -1,0 +1,57 @@
+import React from 'react';
+import { useState } from 'react'
+
+/*function App() {
+  const [count, setCount] = useState(0)
+  
+  const styles = {
+    main: {
+      padding: '20px',
+    },
+    title: {
+      color: '#5C6AC4'
+    },
+  };
+
+  return (
+    <div style={styles.main}>
+      <h1 style={styles.title}>Hello, World!</h1>
+      <div>
+        <button onClick={() => setCount((count) => count + 1)}>
+          count {count}
+        </button>
+      </div>
+    </div>
+  )
+}
+*/
+function App() {
+  const [productname, updatedName] = useState("this is redmi 9 power");
+  const [price, setPrice] = useState("");
+
+  return (
+    <>
+      <h1>Product Name: {productname}</h1>
+
+      <input
+        type="text"
+        placeholder="Enter price"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+
+      <br /><br />
+
+      <button
+        onClick={() => {
+          updatedName((prev) => prev + " " + price);
+          setPrice("");
+        }}
+      >
+        Update
+      </button>
+    </>
+  );
+}
+
+export default App;
