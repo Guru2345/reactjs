@@ -1,0 +1,12 @@
+function App(){
+  return (
+    <>
+   
+      <h1>back ground color </h1>
+      <input type='color' onClick={
+        (e)=>{
+          document.body.style.background=e.target.value;
+        }
+      }/>
+    </>)
+}
