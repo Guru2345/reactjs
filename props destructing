@@ -1,0 +1,27 @@
+import React, { useState } from 'react';
+
+// Define the Product component
+function Product(p) {
+  return (
+    <div>
+      <h2>id: {p.id}</h2>
+      <h2>name: {p.name}</h2>
+      <h2>price: {p.price}</h2>
+    </div>
+  );
+}
+
+// Define the App component
+function App() {
+  let pr = {
+    id: 1,
+    name: "lenovo",
+    price: 20000
+  };
+
+  return (
+    <Product {...pr} />
+  );
+}
+
+export default App;
