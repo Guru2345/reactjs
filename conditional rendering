@@ -1,0 +1,28 @@
+function App() {
+  return (
+    <>
+      <Header />
+      {adminbtn ? <Admin /> : null}
+    </>
+  );
+}
+
+let loginbtn = true;
+let adminbtn = false;
+
+function Header() {
+  return (
+    <ul>
+      <li>home</li>
+      <li>about</li>
+      <li>content</li>
+      {loginbtn ? <li>log out</li> : <li>log in</li>}
+    </ul>
+  );
+}
+
+function Admin() {
+  return <h1>this is admin button</h1>;
+}
+
+export default App;
