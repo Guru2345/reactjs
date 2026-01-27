@@ -1,0 +1,31 @@
+import React from 'react';
+import { useState } from 'react'
+function App() {
+  const [count, setCount] = useState(0)
+  
+  const styles = {
+    main: {
+      padding: '20px',
+    },
+    title: {
+      color: '#5C6AC4'
+    },
+  };
+
+  return (
+    <div style={styles.main}>
+      <div>
+        <h2>{count}</h2>
+        <button onClick={() => {setCount(100)}}>click </button>
+          <br></br>
+          <input type="text" onChange={
+            (e)=>{
+              let temp=e.target.value
+              setCount(temp)
+            }
+          }/>
+      </div>
+      </div>
+  )
+}
+export default App
