@@ -1,0 +1,11 @@
+import user from './user.png'
+import user from './images/dish2.png'
+function App(){
+return (
+<>
+<img src={user}/>
+<img src={dish}/>
+</>
+)
+}
+export default.App
