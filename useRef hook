@@ -1,0 +1,36 @@
+import { useRef, useState } from 'react';
+
+function App() {
+  let ele = useRef(null);
+  let x = useRef(20);
+  const [y, setY] = useState(19);
+
+  return (
+    <>
+      <h1 ref={ele}>this is useRef heading</h1>
+      <button
+        onClick={() => {
+          console.log(ele);          // logs the ref object
+          console.dir(ele.current);  // logs the actual DOM element
+        }}
+      >
+        click
+      </button>
+
+      <h1>x value: {x.current}</h1>
+      <h1>y value: {y}</h1>
+
+      <button
+        onClick={() => {
+          x.current = x.current + 10; // update ref
+          console.log(x.current);     // logs new value
+          setY(y + 10);               // update state (triggers re-render)
+        }}
+      >
+        increment
+      </button>
+    </>
+  );
+}
+
+export default App;
