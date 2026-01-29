@@ -1,0 +1,80 @@
+App.js
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+import Home from './Home';
+import About from './About';
+import Login from './Login';
+import Content from './Content';
+
+function Header() {
+  return (
+    <ol>
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/About">About</Link></li>
+      <li><Link to="/Login">Login</Link></li>
+      {/* Route param example */}
+      <li><Link to="/Content/123?sort=asc&filter=active">Content with Params</Link></li>
+    </ol>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Login" element={<Login />} />
+        
+        {/* Route parameter :id */}
+        <Route path="/Content/:id" element={<Content />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+Content.js
+import React from "react";
+import { useParams, useLocation, useSearchParams } from "react-router-dom";
+
+function Content() {
+  // Route parameter
+  const { id } = useParams();
+
+  // Location object (pathname, search, hash, state)
+  const location = useLocation();
+
+  // Query parameters (with setter)
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const sort = searchParams.get("sort") || "none";
+  const filter = searchParams.get("filter") || "none";
+
+  // Function to update query params
+  const toggleSort = () => {
+    const newSort = sort === "asc" ? "desc" : "asc";
+    // Update query params while keeping existing ones
+    searchParams.set("sort", newSort);
+    setSearchParams(searchParams);
+  };
+
+  return (
+    <div>
+      <h2>Content Page</h2>
+      <p>Route Param (id): {id}</p>
+      <p>Query Param (sort): {sort}</p>
+      <p>Query Param (filter): {filter}</p>
+      <p>Full Path: {location.pathname}</p>
+      <p>Full Query String: {location.search}</p>
+
+      <button onClick={toggleSort}>
+        Toggle Sort (asc ↔ desc)
+      </button>
+    </div>
+  );
+}
+
+export default Content;
