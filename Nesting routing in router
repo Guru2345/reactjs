@@ -1,0 +1,72 @@
+App.js
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+
+import Home from './Home';
+import About from './About';
+import Login from './Login';
+import Content from './Content';
+import Article from './Article';
+import Profile from './Profile';
+
+function Header() {
+  return (
+    <ol>
+      <li><Link to="/">Home</Link></li>
+      <li><Link to="/About">About</Link></li>
+      <li><Link to="/Login">Login</Link></li>
+      <li><Link to="/Content">Content</Link></li>
+    </ol>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
+        <Route path="/Login" element={<Login />} />
+
+        {/* Parent route with nested children */}
+        <Route path="/Content" element={<Content />}>
+          <Route path="article" element={<Article />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+import React from 'react';
+import { Link, Outlet } from 'react-router-dom';
+
+function Content() {
+  return (
+    <div>
+      <h2>Content Page</h2>
+      <nav>
+        <Link to="article">Article</Link> |{" "}
+        <Link to="profile">Profile</Link>
+      </nav>
+
+      {/* Nested child routes will render here */}
+      <Outlet />
+    </div>
+  );
+}
+
+export default Content;
+// Article.js
+function Article() {
+  return <h3>This is an Article page</h3>;
+}
+export default Article;
+
+// Profile.js
+function Profile() {
+  return <h3>This is a Profile page</h3>;
+}
+export default Profile;
