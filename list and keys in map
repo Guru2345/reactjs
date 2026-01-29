@@ -1,0 +1,21 @@
+import React from 'react';
+
+function App() {
+  let langs = [
+    { id: 1, lang: "CSS" },
+    { id: 2, lang: "HTML" }
+  ];
+
+  return (
+    <>
+      <h1>This is lists & keys in map method</h1>
+      <ul>
+        {langs.map((l) => (
+          <li key={l.id}>{l.lang}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+export default App;
