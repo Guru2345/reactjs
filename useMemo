@@ -1,0 +1,23 @@
+import { useState, useMemo } from "react";
+
+function App() {
+  const [counter, setCounter] = useState(0);
+  const num1 = 10;
+  const num2 = 20;
+
+  // useMemo to memoize the sum
+  const sum = useMemo(() => {
+    return num1 + num2;
+  }, [num1, num2]);
+
+  return (
+    <>
+      <h1>This is useMemo component</h1>
+      <button onClick={() => setCounter(counter + 1)}>update</button>
+      <h1>counter: {counter}</h1>
+      <h1>sum: {sum}</h1>
+    </>
+  );
+}
+
+export default App;
