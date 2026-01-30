@@ -1,0 +1,41 @@
+App.js
+import useApiData from "./util";
+
+function App() {
+  let products = useApiData("https://fakestoreapi.com/products");
+
+  return (
+    <>
+      <h1>this is custom hook project</h1>
+      <div>
+        {products.map((p) => (
+          <div key={p.id}>
+            <h3>{p.title}</h3>
+            <p>Price: ${p.price}</p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+export default App;
+Util.js
+import { useState, useEffect } from "react";
+
+function useApiData(url) {
+  let [data, setData] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      let res = await fetch(url);
+      let apiData = await res.json();
+      setData(apiData);
+    }
+    getData();
+  }, [url]);
+
+  return data;
+}
+
+export default useApiData;
