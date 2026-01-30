@@ -1,0 +1,38 @@
+App.js
+import Home from './Home';
+import { createContext } from 'react';
+
+// Create context object
+export const Context = createContext();
+
+function App() {
+  let p = {
+    name: "guru",
+    price: 2345
+  };
+
+  return (
+    <>
+      <Context.Provider value={p}>
+        <Home />
+      </Context.Provider>
+    </>
+  );
+}
+Home.js
+import { useContext } from 'react';
+import { Context } from './App';
+
+function Home() {
+  const data = useContext(Context);  // consume context properly
+
+  return (
+    <>
+      <h1>This is Home component</h1>
+      <h1>Data: {data.price}</h1>
+      <h2>Name: {data.name}</h2>
+    </>
+  );
+}
+
+export default Home;
