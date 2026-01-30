@@ -1,0 +1,30 @@
+import { useRef } from "react";
+
+function App() {
+  const headings = useRef([]);
+
+  return (
+    <>
+      <h1
+        ref={(e) => (headings.current[0] = e)}
+        onClick={() => console.log(headings.current)}
+      >
+        this is heading 1
+      </h1>
+      <h1
+        ref={(e) => (headings.current[1] = e)}
+        onClick={() => console.log(headings.current)}
+      >
+        this is heading 2
+      </h1>
+      <h1
+        ref={(e) => (headings.current[2] = e)}
+        onClick={() => console.log(headings.current)}
+      >
+        this is heading 3
+      </h1>
+    </>
+  );
+}
+
+export default App;
