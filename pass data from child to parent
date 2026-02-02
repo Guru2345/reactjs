@@ -1,0 +1,43 @@
+import React, { useState } from "react";
+
+function App() {
+  const [Todos, UpdateTodos] = useState(["Task1", "Task2"]);
+
+  const addNew = (task) => {
+    UpdateTodos([...Todos, task]);
+  };
+
+  return (
+    <>
+      <Search add={addNew} />
+      <ul>
+        {Todos.map((t, index) => (
+          <li key={index}>{t}</li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+function Search(props) {
+  const [newTask, setNewTask] = useState("");
+
+  return (
+    <>
+      <input
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+      />
+      <button
+        onClick={() => {
+          props.add(newTask);
+          setNewTask(""); // clears input after adding
+        }}
+      >
+        addtodo
+      </button>
+    </>
+  );
+}
+
+export default App;
