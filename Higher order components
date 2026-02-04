@@ -1,0 +1,40 @@
+import React from 'react'
+function AuthenticatedApp(Component) {
+  let authCheck = true;
+  return (props) => {
+    if (authCheck) {
+      return <Component {...props} />;
+    } else {
+      return <Login />;
+    }
+  };
+}
+
+function Users(props) {
+  return (
+    <div>
+      <h1>Users Component</h1>
+      <h1>name: {props.username}</h1>
+    </div>
+  );
+}
+
+function Login() {
+  return (
+    <div>
+      <h1>Login Component</h1>
+    </div>
+  );
+}
+
+const ProtectedUsers = AuthenticatedApp(Users);
+
+function App() {
+  return (
+    <div>
+      <ProtectedUsers username="Alice" />
+    </div>
+  );
+}
+
+export default App;
