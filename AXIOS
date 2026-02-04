@@ -1,0 +1,32 @@
+import React, { useEffect } from "react";   // ✅ import useEffect
+import axios from "axios";
+
+function App() {
+  // Create axios instance
+  const api = axios.create({
+    baseURL: "https://fakestoreapi.com"   // ✅ use a real test API
+  });
+
+  // Function to fetch products
+  async function getProducts() {
+    try {
+      let response = await api.get("/products");
+      console.log(response.data);   // ✅ logs products to console
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
+
+  // Call getProducts when component mounts
+  useEffect(() => {
+    getProducts();
+  }, []);
+
+  return (
+    <div className="App">
+      <h1>Welcome to Axios React App</h1>
+    </div>
+  );
+}
+
+export default App;
