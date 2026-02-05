@@ -1,0 +1,22 @@
+import ReactDOM from 'react-dom';
+
+function Popup(props) {
+  return ReactDOM.createPortal(
+    <>
+      <h1>this is popup component</h1>
+      <h1>{props.data}</h1>
+    </>,
+    document.getElementById('portal')
+  );
+}
+
+function App() {
+  return (
+    <>
+      <h1>this is the app component</h1>
+      <Popup data="guru" />
+    </>
+  );
+}
+
+export default App;
