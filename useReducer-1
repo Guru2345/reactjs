@@ -1,0 +1,17 @@
+import { useReducer } from 'react';
+function Reducer(state, action) {
+  console.log(state, action);
+  return state + action;
+}
+function App() {
+  const [count, dispatch] = useReducer(Reducer, 0);
+  return(
+    <>
+    <h1>this is use reducer component</h1>
+    <h2>Count: {count}</h2>
+    <button onClick={() => dispatch(-1)}>-</button>
+   < button onClick={() => dispatch(1)}>+</button>
+    </>
+  )
+}
+export default App;
