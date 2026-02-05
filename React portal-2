@@ -1,0 +1,49 @@
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+
+function Popup({ onClose }) {
+  const portalRoot = document.getElementById('portal');
+
+  return ReactDOM.createPortal(
+    <div style={overlayStyle}>
+      <div style={popupStyle}>
+        <h2>This is Portal Popup</h2>
+        <p>Rendered outside the root div</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>,
+    portalRoot
+  );
+}
+
+export default function App() {
+  const [show, setShow] = useState(false);
+
+  return (
+    <>
+      <h1>This is App Component</h1>
+      <button onClick={() => setShow(true)}>Open Popup</button>
+
+      {show && <Popup onClose={() => setShow(false)} />}
+    </>
+  );
+}
+
+/* styles */
+const overlayStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  background: 'rgba(0,0,0,0.5)',
+};
+
+const popupStyle = {
+  background: '#fff',
+  padding: '20px',
+  width: '300px',
+  margin: '150px auto',
+  textAlign: 'center',
+  borderRadius: '8px',
+};
