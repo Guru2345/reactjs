@@ -1,0 +1,43 @@
+APP.jsx
+ import Store from './Store';
+function App(){
+  return(
+    <div>
+      <h1>this is the redux store</h1>
+      <h2>Balance: {Store.getState().balance}</h2>
+      <h2>Name: {Store.getState().fullName}</h2>
+      <h2>Mobile: {Store.getState().mobile}</h2>
+    </div>
+  );
+}
+export default App;
+Store.jsx
+import { createStore } from "redux";
+const initialState = {
+    balance:0,
+    fullName:"",
+    mobile:null,
+}
+function accountReducer(state=initialState,action){
+    switch(action.type){
+        case "DEPOSIT":
+            return {...state,balance:state.balance+action.payload}
+        case "WITHDRAW":
+            return {...state,balance:state.balance-action.payload}
+        case "UPDATE_NAME":
+            return {...state,fullName:action.payload}
+        case "UPDATE_MOBILE":
+            return {...state,mobile:action.payload}
+    }
+}
+const store=createStore(accountReducer);
+console.log(store.getState());
+store.dispatch({type:"DEPOSIT",payload:1000});
+console.log(store.getState());
+store.dispatch({type:"WITHDRAW",payload:500});
+console.log(store.getState());
+store.dispatch({type:"UPDATE_NAME",payload:"Guru"});
+console.log(store.getState());
+store.dispatch({type:"UPDATE_MOBILE",payload:1234567890});
+console.log(store.getState());
+export default store;
