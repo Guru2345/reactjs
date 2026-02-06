@@ -1,0 +1,41 @@
+CounterSlice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: { value: 0 },
+  reducers: {
+    increment: (state) => {
+      state.value += 1;
+    },
+    decrement: (state) => {
+      state.value -= 1;
+    },
+    addByAmount: (state, action) => {
+      state.value += action.payload;
+    },
+  },
+});
+
+export const { increment, decrement, addByAmount } = counterSlice.actions;
+export default counterSlice.reducer;
+App.js
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, addByAmount } from "./counterSlice";
+
+function App() {
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <h1>Counter: {count}</h1>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(decrement())}>-</button>
+      <button onClick={() => dispatch(addByAmount(5))}>+5</button>
+    </div>
+  );
+}
+
+export default App;
