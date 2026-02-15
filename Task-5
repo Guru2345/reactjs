@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenStore | Integrated Portfolio & Shop</title>
+    <style>
+        /* --- TASK 5: OPTIMIZATION & CSS VARIABLES --- */
+        :root {
+            --primary: #2563eb;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #22c55e;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
+
+        /* --- NAVIGATION --- */
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 1rem 5%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-weight: 600; transition: var(--transition); }
+        .nav-links a:hover { color: var(--primary); }
+        .cart-count { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; }
+
+        /* --- HERO SECTION --- */
+        header { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=1350&q=80') center/cover; color: white; }
+
+        /* --- STORE FRONT (FILTER & SORT) --- */
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        .controls { 
+            display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; 
+            margin-bottom: 2rem; background: white; padding: 1.5rem; border-radius: 8px; 
+        }
+        select, input { padding: 0.6rem; border: 1px solid #ddd; border-radius: 5px; outline: none; }
+
+        /* --- PRODUCT GRID (RESPONSIVE) --- */
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 2rem; 
+        }
+        .product-card { 
+            background: white; border-radius: 12px; overflow: hidden; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: var(--transition);
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .p-info { padding: 1.5rem; }
+        .btn-add { 
+            width: 100%; background: var(--primary); color: white; border: none; 
+            padding: 0.8rem; border-radius: 5px; cursor: pointer; font-weight: bold;
+        }
+
+        /* --- CART MODAL --- */
+        #cart-modal { 
+            position: fixed; right: -400px; top: 0; width: 350px; height: 100%; 
+            background: white; shadow: -5px 0 15px rgba(0,0,0,0.1); transition: 0.4s; 
+            z-index: 2000; padding: 2rem; 
+        }
+        #cart-modal.active { right: 0; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Simplified for demo */
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2>ZENSTORE</h2>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#shop">Shop</a></li>
+            <li><a href="#" onclick="toggleCart()">Cart (<span id="count">0</span>)</a></li>
+        </ul>
+    </nav>
+
+    <header id="home">
+        <h1>Full-Stack Portfolio Project</h1>
+        <p>Built with HTML, CSS, and Vanilla JavaScript</p>
+    </header>
+
+    <main class="container" id="shop">
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search products..." onkeyup="filterProducts()">
+            <select id="categorySelect" onchange="filterProducts()">
+                <option value="all">All Categories</option>
+                <option value="Tech">Tech</option>
+                <option value="Lifestyle">Lifestyle</option>
+            </select>
+            <select id="sortSelect" onchange="filterProducts()">
+                <option value="low">Price: Low to High</option>
+                <option value="high">Price: High to Low</option>
+            </select>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+            </div>
+    </main>
+
+    <div id="cart-modal">
+        <h3>Your Cart</h3>
+        <div id="cart-items"></div>
+        <hr>
+        <p>Total: $<span id="cart-total">0</span></p>
+        <button class="btn-add" onclick="toggleCart()" style="margin-top:1rem; background: var(--dark);">Close</button>
+        <button class="btn-add" onclick="clearCart()" style="margin-top:0.5rem; background: #ef4444;">Clear Cart</button>
+    </div>
+
+    <script>
+        // 1. DATA STATE
+        const products = [
+            { id: 1, name: "UltraBook Pro", price: 1200, category: "Tech", img: "💻" },
+            { id: 2, name: "Leather Journal", price: 25, category: "Lifestyle", img: "📖" },
+            { id: 3, name: "Smart Watch", price: 250, category: "Tech", img: "⌚" },
+            { id: 4, name: "Coffee Press", price: 45, category: "Lifestyle", img: "☕" },
+            { id: 5, name: "Noise Cancelling Headphones", price: 300, category: "Tech", img: "🎧" }
+        ];
+
+        let cart = JSON.parse(localStorage.getItem('zenStoreCart')) || [];
+
+        // 2. RENDER PRODUCTS
+        function renderProducts(data) {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = data.map(p => `
+                <div class="product-card">
+                    <div style="font-size: 5rem; background: #eee; text-align: center; padding: 2rem;">${p.img}</div>
+                    <div class="p-info">
+                        <h4>${p.name}</h4>
+                        <p>${p.category}</p>
+                        <p class="price" style="font-weight:bold; color:var(--primary)">$${p.price}</p>
+                        <button class="btn-add" onclick="addToCart(${p.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 3. FILTER & SORT LOGIC
+        function filterProducts() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const category = document.getElementById('categorySelect').value;
+            const sort = document.getElementById('sortSelect').value;
+
+            let filtered = products.filter(p => {
+                return (category === 'all' || p.category === category) &&
+                       (p.name.toLowerCase().includes(searchTerm));
+            });
+
+            if (sort === 'low') filtered.sort((a,b) => a.price - b.price);
+            if (sort === 'high') filtered.sort((a,b) => b.price - a.price);
+
+            renderProducts(filtered);
+        }
+
+        // 4. CART LOGIC (LOCAL STORAGE)
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCart();
+        }
+
+        function updateCart() {
+            localStorage.setItem('zenStoreCart', JSON.stringify(cart));
+            document.getElementById('count').innerText = cart.length;
+            renderCartItems();
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            container.innerHTML = cart.map((item, idx) => `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <span>$${item.price}</span>
+                </div>
+            `).join('');
+            
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            totalEl.innerText = total;
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCart();
+        }
+
+        function toggleCart() {
+            document.getElementById('cart-modal').classList.toggle('active');
+        }
+
+        // INITIALIZE
+        renderProducts(products);
+        updateCart();
+    </script>
+</body>
+</html>
